@@ -5,29 +5,19 @@ function fetchData(location) {
   return fetch(
     `http://api.weatherapi.com/v1/forecast.json?key=106c9a3f76aa4badb00163914241605&q=${location}&days=3&aqi=no&alerts=no`,
     { mode: 'cors' },
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Could not find location please try again.');
-      }
-
-      return response.json();
-    })
-    .then((result) => {
-      return result;
-    })
-    .catch((error) => {
-      console.log('promise ->', error);
-    });
+  ).then((response) => {
+    if (!response.ok) {
+      throw new Error(`${response.status} - ${response.statusText}`);
+    }
+    return response.json();
+  });
 }
 
-function formatData(dataPromise) {
+function formatData(data) {
   const formattedData = {};
 
-  dataPromise.then((data) => {
-    formatMiscData(formattedData, data);
-    formatDays(formattedData, data);
-  });
+  formatMiscData(formattedData, data);
+  formatDays(formattedData, data);
 
   return formattedData;
 }
@@ -67,25 +57,34 @@ function formatDays(obj, data) {
   }
 }
 
-const forecastDataPromise = fetchData('london');
-// const forecastDataPromise = asyncFetchData('london');
-const formattedDataObj = formatData(forecastDataPromise);
-
-console.log(formattedDataObj);
-
 //async await version
 // async function asyncFetchData(location) {
-//   try {
-//     const response = await fetch(
-//       `http://api.weatherapi.com/v1/forecast.json?key=106c9a3f76aa4badb00163914241605&q=${location}&days=3&aqi=no&alerts=no`,
-//       { mode: 'cors' },
-//     );
+//   const response = await fetch(
+//     `http://api.weatherapi.com/v1/forecast.json?key=106c9a3f76aa4badb00163914241605&q=${location}&days=3&aqi=no&alerts=no`,
+//     { mode: 'cors' },
+//   );
 
-//     if (!response.ok) {
-//       throw new Error('Could not find location please try again.');
-//     }
-//     return await response.json();
-//   } catch (err) {
-//     console.log('async ->', err);
+//   if (!response.ok) {
+//     throw new Error(`${response.status} - ${response.statusText}`);
 //   }
+//   return await response.json();
 // }
+
+const btn = document.querySelector('button');
+const input = document.querySelector('input');
+
+btn.addEventListener('click', makeRequest);
+
+function makeRequest() {
+  fetchData(input.value)
+    .then((jsonData) => {
+      //handle success
+      console.log('then');
+      const weatherDataObj = formatData(jsonData);
+      console.log(weatherDataObj);
+    })
+    .catch((err) => {
+      //handle error
+      console.log('catch', err);
+    });
+}
