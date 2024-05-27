@@ -1,3 +1,3 @@
 # Weather
 
-This is a weather forcast app to practice using APis and asynchronous Javascript.
+This is a weather forecast app to practice using APIs and asynchronous Javascript.

@@ -6,7 +6,22 @@
     <title>Weather</title>
   </head>
   <body>
-    <input type="text" />
-    <button>Search</button>
+    <h1 id="title">Weather</h1>
+
+    <div id="search-container">
+      <form action="#" id="search-form">
+        <input type="text" id="search-input" autocomplete="off" />
+        <button id="search-submit">Search</button>
+      </form>
+    </div>
+
+    <div id="temp-control-container">
+      <div id="temp-control">
+        <div class="cel active">&deg;C</div>
+        <div class="far">&deg;F</div>
+      </div>
+    </div>
+
+    <div id="weather-display"></div>
   </body>
 </html>
