@@ -9,12 +9,26 @@ const searchInput = document.querySelector('input');
 const temps = document.querySelectorAll('#temp-control > *');
 const tempsControl = document.querySelector('#temp-control');
 let weatherDataObj = {};
+let isCelSelected = true;
 
 function toggleTemp(event) {
-  temps.forEach((temp) => {
-    temp.classList.remove('active');
-  });
-  event.target.classList.add('active');
+  if (!event.target.classList.contains('active')) {
+    temps.forEach((temp) => {
+      temp.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    isCelSelected = !isCelSelected;
+    dom.updateWeatherDisplay(weatherDataObj, isCelSelected);
+  }
+}
+
+function handleError(error) {
+  const errorMsg = document.querySelector('#error-msg');
+  if (error.status === 400) {
+    errorMsg.textContent = "* Couldn't find location, please try again.";
+  } else {
+    errorMsg.textContent = '* There was a problem, please try again.';
+  }
 }
 
 searchForm.addEventListener('submit', (event) => {
@@ -25,7 +39,7 @@ searchForm.addEventListener('submit', (event) => {
   weatherData
     .then((data) => {
       weatherDataObj = formatData(data);
-      dom.updateWeatherDisplay(weatherDataObj);
+      dom.updateWeatherDisplay(weatherDataObj, isCelSelected);
 
       console.log(weatherDataObj);
     })
@@ -40,12 +54,3 @@ searchInput.addEventListener('input', () => {
 });
 
 tempsControl.addEventListener('click', toggleTemp);
-
-function handleError(error) {
-  const errorMsg = document.querySelector('#error-msg');
-  if (error.status === 400) {
-    errorMsg.textContent = "* Couldn't find location, please try again.";
-  } else {
-    errorMsg.textContent = '* There was a problem, please try again.';
-  }
-}
