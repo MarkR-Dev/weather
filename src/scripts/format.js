@@ -7,11 +7,18 @@ function formatData(data) {
   return formattedData;
 }
 
+function formatDateTime(dateTime) {
+  let formattedDateTime = dateTime.split(' ');
+  formattedDateTime[0] = formattedDateTime[0].split('-').reverse().join('-');
+  return formattedDateTime.reverse().join(' ');
+}
+
+// Format data about location
 function formatMiscData(obj, data) {
   obj.location = data.location.name;
   obj.country = data.location.country;
-  obj.localTime = data.location.localtime;
-  obj.lastUpdated = data.current.last_updated;
+  obj.localTime = formatDateTime(data.location.localtime);
+  obj.lastUpdated = formatDateTime(data.current.last_updated);
 }
 
 // Format current day weather and next 2 days forecast
