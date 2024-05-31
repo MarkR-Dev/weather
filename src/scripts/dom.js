@@ -1,3 +1,5 @@
+import RainChanceSvg from '../assets/rain.svg';
+
 function displayLocation(weatherData) {
   const location = document.querySelector('#weather-display #location');
   location.textContent = `${weatherData.location}, ${weatherData.country} (last updated: ${weatherData.lastUpdated})`;
@@ -8,6 +10,7 @@ function displayCurrentDay(weatherData, isCelSelected) {
   currentDay.textContent = '';
 
   const date = document.createElement('h2');
+  date.classList.add('current-day');
   date.textContent = 'Today';
 
   const weatherConditionDiv = document.createElement('div');
@@ -26,12 +29,12 @@ function displayCurrentDay(weatherData, isCelSelected) {
 
   if (isCelSelected) {
     temp.textContent = `${weatherData.day0.tempCel}°C`;
-    high.textContent = `${Math.round(weatherData.day0.tempHighCel)}°C`;
-    low.textContent = `${Math.round(weatherData.day0.tempLowCel)}°C`;
+    high.textContent = `High ${Math.round(weatherData.day0.tempHighCel)}°C`;
+    low.textContent = `Low ${Math.round(weatherData.day0.tempLowCel)}°C`;
   } else {
     temp.textContent = `${Math.round(weatherData.day0.tempFar)}°F`;
-    high.textContent = `${Math.round(weatherData.day0.tempHighFar)}°F`;
-    low.textContent = `${Math.round(weatherData.day0.tempLowFar)}°F`;
+    high.textContent = `High ${Math.round(weatherData.day0.tempHighFar)}°F`;
+    low.textContent = `Low ${Math.round(weatherData.day0.tempLowFar)}°F`;
   }
 
   tempDiv.appendChild(temp);
@@ -39,8 +42,13 @@ function displayCurrentDay(weatherData, isCelSelected) {
   highLowTempDiv.appendChild(low);
   tempDiv.appendChild(highLowTempDiv);
 
-  const rainChance = document.createElement('h3');
-  rainChance.textContent = `<insert svg here> ${weatherData.day0.rainChance}%`;
+  const rainChanceDiv = document.createElement('div');
+  const rainChanceSvg = new Image();
+  rainChanceSvg.src = RainChanceSvg;
+  const rainChanceText = document.createElement('h3');
+  rainChanceText.textContent = `${weatherData.day0.rainChance}%`;
+  rainChanceDiv.appendChild(rainChanceSvg);
+  rainChanceDiv.appendChild(rainChanceText);
 
   const sunriseSunsetDiv = document.createElement('div');
   const sunrise = document.createElement('h3');
@@ -53,7 +61,7 @@ function displayCurrentDay(weatherData, isCelSelected) {
   currentDay.appendChild(date);
   currentDay.appendChild(weatherConditionDiv);
   currentDay.appendChild(tempDiv);
-  currentDay.appendChild(rainChance);
+  currentDay.appendChild(rainChanceDiv);
   currentDay.appendChild(sunriseSunsetDiv);
 }
 

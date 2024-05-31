@@ -18,13 +18,17 @@ function toggleTemp(event) {
     });
     event.target.classList.add('active');
     isCelSelected = !isCelSelected;
+  }
+  if (weatherDataObj.location) {
     dom.updateWeatherDisplay(weatherDataObj, isCelSelected);
   }
 }
 
 function handleError(error) {
   const errorMsg = document.querySelector('#error-msg');
-  if (error.status === 400) {
+  const errorStatus = error.toString().split(' ')[1];
+
+  if (errorStatus === '400') {
     errorMsg.textContent = "* Couldn't find location, please try again.";
   } else {
     errorMsg.textContent = '* There was a problem, please try again.';
