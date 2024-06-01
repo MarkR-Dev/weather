@@ -7,6 +7,12 @@ function formatData(data) {
   return formattedData;
 }
 
+function formatDayName(date) {
+  const dateObj = new Date(date);
+  const dateName = dateObj.toLocaleDateString('en-GB', { weekday: 'long' });
+  return dateName;
+}
+
 function formatDateTime(dateTime) {
   let formattedDateTime = dateTime.split(' ');
   formattedDateTime[0] = formattedDateTime[0].split('-').reverse().join('-');
@@ -49,4 +55,4 @@ function formatDays(obj, data) {
   }
 }
 
-export { formatData };
+export { formatData, formatDayName };

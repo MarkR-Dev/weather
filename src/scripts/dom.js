@@ -1,4 +1,5 @@
 import RainChanceSvg from '../assets/rain.svg';
+import { formatDayName } from './format';
 
 function displayLocation(weatherData) {
   const location = document.querySelector('#weather-display #location');
@@ -9,10 +10,12 @@ function displayCurrentDay(weatherData, isCelSelected) {
   const currentDay = document.querySelector('#weather-display #current');
   currentDay.textContent = '';
 
+  // Date
   const date = document.createElement('h2');
   date.classList.add('current-day');
   date.textContent = 'Today';
 
+  // Weather Condition
   const weatherConditionDiv = document.createElement('div');
   weatherConditionDiv.classList.add('weather-condition-div');
   const weatherConditionImg = document.createElement('img');
@@ -24,6 +27,7 @@ function displayCurrentDay(weatherData, isCelSelected) {
   weatherConditionDiv.appendChild(weatherConditionImg);
   weatherConditionDiv.appendChild(weatherConditionText);
 
+  // Temp
   const tempDiv = document.createElement('div');
   tempDiv.classList.add('temp-div');
   const temp = document.createElement('h3');
@@ -50,17 +54,19 @@ function displayCurrentDay(weatherData, isCelSelected) {
   highLowTempDiv.appendChild(low);
   tempDiv.appendChild(highLowTempDiv);
 
+  // Rain Chance
   const rainChanceDiv = document.createElement('div');
   rainChanceDiv.classList.add('rain-chance-div');
-  const rainChanceSvg = new Image();
-  rainChanceSvg.src = RainChanceSvg;
-  rainChanceSvg.classList.add('rain-chance-img');
+  const rainChanceImg = new Image();
+  rainChanceImg.src = RainChanceSvg;
+  rainChanceImg.classList.add('rain-chance-img');
   const rainChanceText = document.createElement('h3');
   rainChanceText.textContent = `${weatherData.day0.rainChance}%`;
   rainChanceText.classList.add('rain-chance-text');
-  rainChanceDiv.appendChild(rainChanceSvg);
+  rainChanceDiv.appendChild(rainChanceImg);
   rainChanceDiv.appendChild(rainChanceText);
 
+  // Sunrise Sunset
   const sunriseSunsetDiv = document.createElement('div');
   sunriseSunsetDiv.classList.add('sunrise-sunset');
 
@@ -80,14 +86,12 @@ function displayCurrentDay(weatherData, isCelSelected) {
   sunset.textContent = `Sunset:`;
   const sunsetTime = document.createElement('h3');
   sunsetTime.textContent = `${weatherData.day0.sunset}`;
+
   sunsetDiv.appendChild(sunset);
   sunsetDiv.appendChild(sunsetTime);
   sunriseSunsetDiv.appendChild(sunsetDiv);
 
-  // const sunset = document.createElement('h3');
-  // sunset.textContent = `Sunset: ${weatherData.day0.sunset}`;
-  // sunriseSunsetDiv.appendChild(sunset);
-
+  // Append to DOM
   currentDay.appendChild(date);
   currentDay.appendChild(weatherConditionDiv);
   currentDay.appendChild(tempDiv);
@@ -95,11 +99,76 @@ function displayCurrentDay(weatherData, isCelSelected) {
   currentDay.appendChild(sunriseSunsetDiv);
 }
 
+function displayDays(weatherData, isCelSelected) {
+  const days = document.querySelectorAll('#weather > div:not(:first-child)');
+  const daysWeatherData = [weatherData.day1, weatherData.day2];
+
+  days.forEach((day, index) => {
+    day.textContent = '';
+
+    const date = document.createElement('div');
+
+    // Day Name
+    date.textContent = `${formatDayName(daysWeatherData[index].date)}`;
+    date.classList.add('date');
+
+    // Weather Condition
+    const conditionDiv = document.createElement('div');
+    conditionDiv.classList.add('condition-div');
+    const conditionImg = document.createElement('img');
+    conditionImg.src = daysWeatherData[index].conditionImg;
+    conditionImg.classList.add('condition-img');
+    const conditionText = document.createElement('h3');
+    conditionText.textContent = daysWeatherData[index].condition;
+    conditionText.classList.add('condition-text');
+    conditionDiv.appendChild(conditionImg);
+    conditionDiv.appendChild(conditionText);
+
+    // Temp
+    const tempDiv = document.createElement('div');
+    tempDiv.classList.add('temp-div');
+    const high = document.createElement('h3');
+    high.classList.add('high');
+    const low = document.createElement('h3');
+    low.classList.add('low');
+
+    if (isCelSelected) {
+      high.textContent = `H ${Math.round(daysWeatherData[index].tempHighCel)}°C`;
+      low.textContent = `L ${Math.round(daysWeatherData[index].tempLowCel)}°C`;
+    } else {
+      high.textContent = `H ${Math.round(daysWeatherData[index].tempHighFar)}°F`;
+      low.textContent = `L ${Math.round(daysWeatherData[index].tempLowFar)}°F`;
+    }
+    tempDiv.appendChild(high);
+    tempDiv.appendChild(low);
+
+    // Rain Chance
+    const rainChanceDiv = document.createElement('div');
+    rainChanceDiv.classList.add('rain-chance-div');
+    const rainChanceImg = new Image();
+    rainChanceImg.src = RainChanceSvg;
+    rainChanceImg.classList.add('rain-chance-img');
+    const rainChanceText = document.createElement('h3');
+    rainChanceText.textContent = `${daysWeatherData[index].rainChance}%`;
+    rainChanceText.classList.add('rain-chance-text');
+    rainChanceDiv.appendChild(rainChanceImg);
+    rainChanceDiv.appendChild(rainChanceText);
+
+    // Append to DOM
+    day.appendChild(date);
+    day.appendChild(conditionDiv);
+    day.appendChild(tempDiv);
+    day.appendChild(rainChanceDiv);
+  });
+}
+
+// Update Display
 function updateWeatherDisplay(weatherData, isCelSelected) {
   const weatherDisplay = document.querySelector('#weather-display');
   weatherDisplay.style.visibility = 'visible';
   displayLocation(weatherData);
   displayCurrentDay(weatherData, isCelSelected);
+  displayDays(weatherData, isCelSelected);
 }
 
 export { updateWeatherDisplay };
