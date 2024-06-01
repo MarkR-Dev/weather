@@ -11,17 +11,22 @@ const tempsControl = document.querySelector('#temp-control');
 let weatherDataObj = {};
 let isCelSelected = true;
 
-function toggleTemp(event) {
-  if (!event.target.classList.contains('active')) {
-    temps.forEach((temp) => {
-      temp.classList.remove('active');
-    });
-    event.target.classList.add('active');
-    isCelSelected = !isCelSelected;
-  }
-  if (weatherDataObj.location) {
-    dom.updateWeatherDisplay(weatherDataObj, isCelSelected);
-  }
+function handleRequest(event) {
+  event.preventDefault();
+
+  const weatherData = api.fetchWeatherData(searchInput.value);
+  // const weatherData = api.asyncFetchWeatherData(searchInput.value);
+
+  weatherData.then(handleSuccess).catch(handleError);
+
+  searchForm.reset();
+}
+
+function handleSuccess(data) {
+  weatherDataObj = formatData(data);
+  dom.updateWeatherDisplay(weatherDataObj, isCelSelected);
+
+  console.log(weatherDataObj);
 }
 
 function handleError(error) {
@@ -35,22 +40,20 @@ function handleError(error) {
   }
 }
 
-searchForm.addEventListener('submit', (event) => {
-  event.preventDefault();
+function toggleTemp(event) {
+  if (!event.target.classList.contains('active')) {
+    temps.forEach((temp) => {
+      temp.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    isCelSelected = !isCelSelected;
+  }
+  if (weatherDataObj.location) {
+    dom.updateWeatherDisplay(weatherDataObj, isCelSelected);
+  }
+}
 
-  const weatherData = api.fetchWeatherData(searchInput.value);
-  // const weatherData = api.asyncFetchWeatherData(searchInput.value);
-  weatherData
-    .then((data) => {
-      weatherDataObj = formatData(data);
-      dom.updateWeatherDisplay(weatherDataObj, isCelSelected);
-
-      console.log(weatherDataObj);
-    })
-    .catch(handleError);
-
-  searchForm.reset();
-});
+searchForm.addEventListener('submit', handleRequest);
 
 searchInput.addEventListener('input', () => {
   const errorMsg = document.querySelector('#error-msg');
