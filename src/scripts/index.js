@@ -14,8 +14,8 @@ let isCelSelected = true;
 function handleRequest(event) {
   event.preventDefault();
 
-  const weatherData = api.fetchWeatherData(searchInput.value);
-  // const weatherData = api.asyncFetchWeatherData(searchInput.value);
+  // const weatherData = api.fetchWeatherData(searchInput.value);
+  const weatherData = api.asyncAwaitFetchWeatherData(searchInput.value);
 
   weatherData.then(handleSuccess).catch(handleError);
 
@@ -25,8 +25,6 @@ function handleRequest(event) {
 function handleSuccess(data) {
   weatherDataObj = formatData(data);
   dom.updateWeatherDisplay(weatherDataObj, isCelSelected);
-
-  console.log(weatherDataObj);
 }
 
 function handleError(error) {

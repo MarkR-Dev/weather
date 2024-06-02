@@ -6,12 +6,16 @@ body {
   font-family: monospace;
 }
 
+/* Page Title */
+
 #title {
   color: white;
   font-size: 4rem;
   text-align: center;
   padding: 20px 0px;
 }
+
+/* Location Search */
 
 #search-container {
   display: flex;
@@ -54,11 +58,14 @@ body {
   top: 50px;
 }
 
+/* Temp Units Control */
+
 #temp-control-container {
   margin: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
 }
 
 #temp-control {
@@ -66,16 +73,13 @@ body {
   justify-content: center;
   align-items: center;
   font-weight: bold;
-}
-#temp-control:hover {
   cursor: pointer;
 }
 
-#temp-control > * {
+#temp-control > div {
   border: 1px solid white;
   width: 50px;
   height: 25px;
-  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,6 +100,8 @@ body {
   color: black;
 }
 
+/* Weather Display */
+
 #weather-display {
   display: flex;
   flex-direction: column;
@@ -112,7 +118,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 #weather {
@@ -132,6 +138,8 @@ body {
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.4);
 }
+
+/* Current Day */
 
 #current {
   grid-area: current;
@@ -204,9 +212,48 @@ body {
   justify-content: space-between;
 }
 
+/* 2 Day Forecast */
+
 #day-one {
   grid-area: day-one;
 }
 #day-two {
   grid-area: day-two;
+}
+
+#weather .day {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+#weather .day .date {
+  font-size: 1.2rem;
+}
+
+#weather .day .condition-div {
+  text-align: center;
+  font-size: 1rem;
+}
+
+#weather .day .temp-div {
+  font-size: 1rem;
+  display: flex;
+  gap: 30px;
+}
+
+#weather .day .rain-chance-div {
+  text-align: center;
+}
+
+#weather .day .rain-chance-img {
+  width: 40px;
+}
+
+#weather .day .rain-chance-text {
+  font-size: 1rem;
+  padding-top: 10px;
 }
