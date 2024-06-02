@@ -171,4 +171,19 @@ function updateWeatherDisplay(weatherData, isCelSelected) {
   displayDays(weatherData, isCelSelected);
 }
 
-export { updateWeatherDisplay };
+function showSpinner() {
+  const searchBtn = document.querySelector('#search-submit');
+  const loadSpinnerDiv = document.createElement('div');
+  loadSpinnerDiv.classList.add('spinner');
+  searchBtn.textContent = '';
+  searchBtn.appendChild(loadSpinnerDiv);
+}
+
+function hideSpinner() {
+  const searchBtn = document.querySelector('#search-submit');
+  const loadSpinnerDiv = document.querySelector('#search-submit .spinner');
+  searchBtn.removeChild(loadSpinnerDiv);
+  searchBtn.textContent = 'Search';
+}
+
+export { updateWeatherDisplay, showSpinner, hideSpinner };

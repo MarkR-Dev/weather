@@ -14,10 +14,12 @@ let isCelSelected = true;
 function handleRequest(event) {
   event.preventDefault();
 
-  // const weatherData = api.fetchWeatherData(searchInput.value);
-  const weatherData = api.asyncAwaitFetchWeatherData(searchInput.value);
+  dom.showSpinner();
 
-  weatherData.then(handleSuccess).catch(handleError);
+  const weatherData = api.fetchWeatherData(searchInput.value);
+  // const weatherData = api.asyncAwaitFetchWeatherData(searchInput.value);
+
+  weatherData.then(handleSuccess).catch(handleError).finally(dom.hideSpinner);
 
   searchForm.reset();
 }
