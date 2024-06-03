@@ -5,7 +5,7 @@ function fetchWeatherData(location) {
   )
     .then((response) => {
       if (!response.ok) {
-        throw new Error(`${response.status} - ${response.statusText}`);
+        throw new Error(`${response.status}`);
       }
       return response.json();
     })
@@ -26,7 +26,7 @@ async function asyncAwaitFetchWeatherData(location) {
       { mode: 'cors' },
     );
     if (!response.ok) {
-      throw new Error(`${response.status} - ${response.statusText}`);
+      throw new Error(`${response.status}`);
     }
 
     return await response.json();
