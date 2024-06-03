@@ -233,11 +233,12 @@ body {
   justify-content: space-between;
 }
 
-/* 2 Day Forecast */
+/* Future Days Forecast */
 
 #day-one {
   grid-area: day-one;
 }
+
 #day-two {
   grid-area: day-two;
 }
